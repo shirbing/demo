@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace 命名空间  唯一的 -->
+<mapper namespace="com.qy.springboot01.mapper.EmployeeMapper">
+    <!--查询 id：唯一 在当前命名空间唯一 给当前sql语句起名 -->
+
+    <!--新增一个员工-->
+    <insert id="insertEmployee" parameterType="Employee">
+        insert into employee(empno,firstname,midinit,lastname,workdept,phoneno,hiredate,job,edlevel,sex,birthdate,salary,bonus)
+        values (seq_emp_empno.nextval,#{firstname},#{midinit},#{lastname},#{workdept},#{phoneno},to_date(#{hiredate},'yyyy-mm-dd'),#{job},#{edlevel},#{sex},to_date(#{birthdate},'yyyy-mm-dd'),#{salary},#{bonus})
+    </insert>
+
+    <!--更新一个员工信息-->
+    <update id="updateEmployee" parameterType="Employee">
+        update employee set job=#{job} where empno=#{empno}
+    </update>
+
+    <!--高级查询加分页-->
+    <select id="searchEmployee" resultType="Employee">
+        select e.firstname,e.salary,e.workdept from(
+          select employee.*,rownum rn from employee
+          <where>
+              <if test="employee.salary!=null">and salary>#{employee.salary}</if>
+              <if test="employee.sex!=null">and sex=#{employee.sex}</if>
+              <if test="employee.workdept">and workdept=#{employee.workdept}</if>
+          </where>
+        )e where e.rn between #{startIndex} and #{endIndex}
+    </select>
+
+    <!--多表联查-->
+    <select id="findEmpList" resultType="HashMap">
+        select dept.*,employee.firstname,employee.job,employee.empno
+        from employee join dept
+        on employee.workdept=dept.deptno
+    </select>
+
+    <!--多表联查2-->
+    <select id="findEmpList1" resultMap="empMap">
+        select dept.deptno,dept.deptname,dept.manager,employee.firstname,employee.job,employee.empno
+        from employee,dept
+        where employee.workdept=dept.deptno
+    </select>
+    <!--autoMapping 让列和属性自动对应-->
+    <resultMap id="empMap" type="Employee" autoMapping="true">
+        <id property="empno" column="empno"></id>
+        <!--多对一关联-->
+        <association property="dept" column="deptno" javaType="Dept" autoMapping="true">
+            <id property="deptno" column="deptno"></id>
+        </association>
+    </resultMap>
+
+</mapper>

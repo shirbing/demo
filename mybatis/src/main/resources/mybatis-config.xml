@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--使用properties引入配置文件-->
+    <properties resource="db.properties"></properties>
+    <settings>
+        <!--是否使用缓存 开发中禁用-->
+        <setting name="cacheEnabled" value="false"/>
+        <!--下划线和驼峰式命名法的匹配  -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--使用启用懒加载机制  true启用-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="true"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <setting name="defaultStatementTimeout" value="25"/>
+        <setting name="defaultFetchSize" value="100"/>
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    </settings>
+
+    <typeAliases>
+        <!--给类起别名-->
+        <!--<typeAlias type="com.qy.domain.Question" alias="Question"></typeAlias>-->
+        <!--给包中所有的类起别名 默认名字为类名 -->
+        <package name="com.qy.domain"></package>
+    </typeAliases>
+
+    <!--配置mybatis数据库环境  default指定当前使用的默认环境 -->
+    <environments default="Oracledevelopment">
+        <!--id给当前连接环境起名 不能重复-->
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${dbcp.driverClassName}"/>
+                <property name="url" value="${dbcp.url}"/>
+                <property name="username" value="${dbcp.username}"/>
+                <property name="password" value="${dbcp.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="Oracledevelopment">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="oracle.jdbc.OracleDriver"/>
+                <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+                <property name="username" value="wang"/>
+                <property name="password" value="wang88"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+    <mappers>
+        <!--引入mapper映射文件的位置-->
+        <mapper resource="mapper/CityEntityMapper.xml"/>
+        <mapper resource="com/qy/mapper/AreaEntityMapper.xml"/>
+        <mapper resource="com/qy/mapper/EmployeeMapper.xml"/>
+        <mapper resource="com/qy/mapper/DeptMapper.xml"/>
+    </mappers>
+
+</configuration>

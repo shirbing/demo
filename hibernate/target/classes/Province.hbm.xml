@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.qy.domain.Province" table="province" schema="wang">
+        <id name="id" column="id">
+            <generator class="native"></generator>
+        </id>
+        <property name="code" column="code"/>
+        <property name="name" column="name"/>
+        <!--一对多
+              name:当前类中属性名
+              column：从表中的外键列名
+              foreign-key：主表中被参照的字段
+              property-ref：主表中关联的被参照的属性名
+              class  从表的类
+
+        -->
+        <set name="cities" cascade="all" lazy="false">
+            <key column="provincecode" foreign-key="code" property-ref="code"></key>
+            <one-to-many class="com.qy.domain.City"></one-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,43 @@
+#server:
+#    port: 8761                    # 指定该Eureka实例的端口
+#    enableSelfPreservation: false
+#eureka:
+#    client:
+#        registerWithEureka: false
+#        fetchRegistry: false
+#        serviceUrl:
+#            defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: eurekaServer
+  eureka:
+    client:
+      registerWithEureka: true
+      fetchRegistry: true
+---
+spring:
+  profiles: peer1                                 # 指定profile=peer1
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: peer1                               # 指定当profile=peer1时，主机名是peer1
+  client:
+    serviceUrl:
+      defaultZone: http://peer2:8762/eureka/      # 将自己注册到peer2这个Eureka上面去
+    registerWithEureka: true
+    fetchRegistry: true
+---
+spring:
+  profiles: peer2
+server:
+  port: 8762
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    registerWithEureka: true
+    fetchRegistry: true 
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka/

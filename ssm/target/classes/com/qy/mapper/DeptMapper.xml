@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace 命名空间  唯一的 -->
+<mapper namespace="com.qy.mapper.DeptMapper">
+    <!--查询 id：唯一 在当前命名空间唯一 给当前sql语句起名 -->
+    <select id="findDeptList" resultMap="deptMap">
+        select dept.*,employee.firstname,employee.job,employee.empno
+        from dept join employee
+        on dept.deptno=employee.workdept
+    </select>
+
+    <resultMap id="deptMap" type="Dept" autoMapping="true">
+        <!--一对多关联-->
+        <collection property="employeeList" ofType="Employee" column="workdept" autoMapping="true">
+
+        </collection>
+    </resultMap>
+
+    <!--真正的一对多-->
+    <select id="findDeptList1" resultMap="deptMap1">
+        select * from dept
+    </select>
+    <resultMap id="deptMap1" type="Dept" autoMapping="true">
+        <!--一对多关联-->
+        <collection property="employeeList" ofType="Employee" column="de        q``````````````ptno" autoMapping="true" select="getEmployeeList">
+
+        </collection>
+    </resultMap>
+    <select id="getEmployeeList" parameterType="java.lang.Integer" resultType="Employee">
+        SELECT * FROM employee WHERE workdept = #{deptno}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

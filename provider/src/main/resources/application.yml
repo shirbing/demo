@@ -1,0 +1,43 @@
+server:
+      port: 8001
+spring:
+  application:
+    name: provider
+  jpa:
+    generate-ddl: false
+    show-sql: true
+  datasource:    # 指定数据源
+      #配置数据库的路径
+      url: jdbc:mysql://localhost:3306/cloud?useUnicode=true&characterEncoding=UTF-8&useSSL=true
+      #数据库登录名
+      username: root
+      #登陆密码
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+
+logging:                                # 配置日志级别，让hibernate打印出执行的SQL
+  level:
+    root: INFO
+    org.hibernate: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+# INFO
+info:
+  app:
+    name: @project.artifactId@
+    encoding: @project.build.sourceEncoding@
+    java:
+      source: @java.version@
+      target: @java.version@
+management:
+  security:
+    enabled: false
+
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+  instance:
+    prefer-ip-address: true

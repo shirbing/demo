@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.qy.domain.City" table="city" schema="wang">
+        <id name="id" column="id">
+            <generator class="native"></generator>
+
+        </id>
+        <property name="code" column="code"/>
+        <property name="name" column="name"/>
+       <!-- <property name="provincecode" column="provincecode"/>-->
+        <!--<property name="province" column="province">-->
+        <!--
+            多对一关联
+            name:City类中属性名 province
+            column :city表中对应的列名
+            class:属性名province对应的对象类
+            如果通过主键关联不需要配置property-ref
+            如果通过非主键关联  需要配置property-ref  指向Province类中的参照的属性名
+        -->
+        <many-to-one name="province" column="provincecode" class="com.qy.domain.Province" property-ref="code" cascade="all">
+            <!--<column name="provincecode"></column>-->
+        </many-to-one>
+        <set name="areas" cascade="all">
+            <key column="citycode" property-ref="code" foreign-key="code"></key>
+            <one-to-many class="com.qy.domain.Area"></one-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

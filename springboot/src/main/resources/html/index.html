@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+index
+<table>
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>菜单名称</th>
+        <th>权限</th>
+        <th>url路径</th>
+    </tr>
+    <tr th:each="menu:${session.menuList}">
+        <td th:text="${menu.id}"></td>
+        <td th:text="${menu.name}"></td>
+        <td th:text="${menu.percode}"></td>
+        <td th:text="${menu.url}"></td>
+    </tr>
+    </thead>
+</table>
+
+
+<span shiro:authenticated="true" >
+	          <span>我已登录</span>
+	    </span>
+<span shiro:haspermission="aaa" >
+	          <span>没有权限</span>
+	    </span>
+<span shiro:haspermission="del" >
+	          <span>我有权限</span>
+	    </span>
+<span shiro:hasRole name="用户管理员" >
+	          <span>我是用户管理员</span>
+	    </span>
+</body>
+</html>
